@@ -5,7 +5,7 @@ import 'gameReviews.dart';
 class Game {
   final int id;
   String title;
-  String thumbnail;
+  dynamic thumbnail;
   String publisher;
   int release_year;
   String description;
@@ -101,18 +101,20 @@ class Game {
         'Content-type': 'application/json'
       };
       try {
-        http.post(Uri.parse(url), body: GetJson(), headers: headers);
+        http.post(Uri.parse(url), body: convert.jsonEncode(GetJson()), headers: headers);
         return true;
       } catch (e) {
+        print(e);
         return false;
       }
   }
 
   bool Delete(String username, int index)
   {
+    return true;
       if(username == this.username)
       {
-          http.delete(Uri.parse("$url/$id"), body: GetJson());
+          http.delete(Uri.parse("$url/$id"));
           return true;
 
       }else return false;

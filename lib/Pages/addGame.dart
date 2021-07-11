@@ -1,9 +1,31 @@
-import 'package:flutter/material.dart';
+import 'dart:io';
+import 'dart:typed_data';
 
-class AddGame extends StatelessWidget 
+import 'package:flutter/material.dart';
+import 'package:gamerev/Data/game.dart';
+import 'package:image_picker/image_picker.dart';
+
+
+class AddGame extends StatefulWidget {
+  const AddGame({ Key? key, required this.title }) : super(key: key);
+  final String title;
+  @override
+  State<StatefulWidget> createState()  => AddGameState(title: title);
+}
+
+class AddGameState extends State<AddGame>
 {
-  AddGame({Key? key, required this.title}) : super(key: key);
-   final String title;
+  AddGameState({ required this.title });
+  final String title;
+  //late Future<Uint8List> file;
+  ImagePicker _imagePicker = ImagePicker();
+
+  @override
+ void initState()  {
+    super.initState();
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -14,6 +36,25 @@ class AddGame extends StatelessWidget
       //String username = "bfhrb345";
       double publishYear = 2000;
 
+      String thumbnail = "infrjnfrmfr";
+      String username = "sinbaddoraji";
+
+      var nameField = TextField(controller: TextEditingController(text: "$name"));
+      var publisherField = TextField(controller: TextEditingController(text: "$name"));
+      var descriptionField = TextField(
+          keyboardType: TextInputType.multiline,
+          maxLines: null,
+          controller: TextEditingController(text: "Description tmdkrnjn")
+      );
+      var publishYearField = TextField(controller: TextEditingController(text: "$name"));
+      var genreField = TextField(controller: TextEditingController(text: "$name"));
+      var platformsField = TextField(controller: TextEditingController(text: "$name"));
+
+      var circleAvatar = Container(
+        width: 500,
+        height: 500,
+        child: Image.network("https://images.nintendolife.com/c59ebd4f6d6c2/exvl66vuyae8pud.original.jpg", fit: BoxFit.cover),
+      );
       return new Scaffold(
           appBar: AppBar(
             title: Text(this.title)
@@ -23,24 +64,37 @@ class AddGame extends StatelessWidget
                     shrinkWrap: true,
                     children: [
                       Center(
-                          child: CircleAvatar(
-                            backgroundColor: Colors.blue,
-                            radius: 120.0,
-                          )
+                          child: circleAvatar
                       ),
-                      TextButton(onPressed: (){}, child: Text("Add/Edit Image")),
+                      Center(
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text("Add image via: "),
+                            TextButton(
+                                onPressed: (){
+                                  setState(() async {
+                                    var file = (await _imagePicker.getImage(source: ImageSource.gallery)).readAsBytes();
+                                  });
+                                },
+                                child: Text("Gallery")),
+                            TextButton(onPressed: (){
+                              setState(() async {
+                                var file = (await _imagePicker.getImage(source: ImageSource.camera)).readAsBytes();
+                              });
+                            }, child: Text("Camera"))
+                          ],
+                        ),
+                      ),
                       Text("Game Name:", style: TextStyle(color: Colors.blue)), 
-                      TextField(controller: TextEditingController(text: "$name")),
+                      nameField,
                       Text("Publisher", style: TextStyle(color: Colors.blue)),
-                      TextField(controller: TextEditingController(text: "$publisher")),
+                      publisherField,
                       Text("Description", style: TextStyle(color: Colors.blue)),
-                      TextField(
-                        keyboardType: TextInputType.multiline,
-                        maxLines: null,
-                        controller: TextEditingController(text: "Description tmdkrnjn")
-                      ),
+                      descriptionField,
                       Text("Publish Year", style: TextStyle(color: Colors.blue)),
-                      TextField(controller: TextEditingController(text: "$publishYear")),
+                      publishYearField,
                       Slider(
                           min: 1980,
                           value: publishYear,
@@ -48,9 +102,51 @@ class AddGame extends StatelessWidget
                           divisions: 4,
                           onChanged: (double value) {
                             //setState(() => publishYear = value);
+
                           }
                       ),
-                      ElevatedButton(onPressed: (){}, child: Text("Add Game"))
+                Text("Genre", style: TextStyle(color: Colors.blue)),
+                      genreField,
+                      Text("Platforms", style: TextStyle(color: Colors.blue)),
+                      platformsField,
+                      ElevatedButton(
+                          onPressed: ()
+                          {
+                              var game = Game(0,
+                                  title,
+                                  thumbnail,
+                                  publisher,
+                                  int.parse(publishYearField.controller!.text),
+                                  descriptionField.controller!.text,
+                                  genreField.controller!.text,
+                                  platformsField.controller!.text,
+                                  username,
+                                  "", "");
+                              bool add = game.Post();
+
+                              if(add)
+                              {
+                                Navigator.of(context).pop();
+                                Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                        builder: (context) => AlertDialog(
+                                          title: const Text('Succesfully added Game'),
+                                          content: const Text('Succesfully added game to GameRev'),
+                                          actions: <Widget>[
+                                            TextButton(
+                                              onPressed: () => Navigator.pop(context, 'OK'),
+                                              child: const Text('OK'),
+                                            ),
+                                          ],
+                                        )
+                                    )
+                                );
+                              }
+
+
+
+                          }
+                      , child: Text("Add Game"))
                     ],
                 ),
           bottomNavigationBar: BottomNavigationBar(

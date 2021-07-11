@@ -46,7 +46,7 @@ static Future<List<GameReview>> GetAllGameReviews(int game_id) async
       var data = convert.jsonDecode(response.body)["data"];
 
       return GameReview(data["id"], data["game_id"], data["rating"], data["review"], data["username"], data["review_time"], data["review_date"]);
-      }
+  }
 
   bool Update(String username)
   {
@@ -80,7 +80,7 @@ static Future<List<GameReview>> GetAllGameReviews(int game_id) async
   {
       if(username == this.username)
       {
-          http.delete(Uri.parse("$url/$id"), body: GetJson());
+          http.delete(Uri.parse("$url/$id"));
           return true;
 
       }else return false;

@@ -1,28 +1,40 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:gamerev/Data/game.dart';
 
 class GameDetails extends StatelessWidget
 {
-  GameDetails({Key? key, required this.title}) : super(key: key);
-  final String title;
+  GameDetails({Key? key, required this.game}) : super(key: key);
+  final Game game;
 
   @override
   Widget build(BuildContext context) {
+
+    var _base64 = base64Decode(game.thumbnail);
+    Image img = Image.memory(_base64);
+
+    var circleAvatar = Container(
+      width: 300,
+      height: 300,
+      child: img
+    );
+
     return Scaffold(
         appBar: AppBar(
-          title: Text(this.title),
+          title: Text(this.game.title),
         ),
         body: Center(
           child: Container(
-            width: 500,
             child: ListView(
               children: [
                 Center(
-                    child: CircleAvatar(
-                      backgroundColor: Colors.blue,
-                      radius: 120.0,
-                    )
+                    child: circleAvatar
                 ),
-                Text("Name of Game: Mario")
+                Text("Name of Game: ${game.title}"),
+                Text("Name of Game: ${game.publisher}"),
+                Text("Release year: ${game.release_year}"),
+                Text("Posted ${game.post_date} by ${game.username}"),
               ],
             ),
           )

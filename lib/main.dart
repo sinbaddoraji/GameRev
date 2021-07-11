@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gamerev/Data/game.dart';
 
 import 'Pages/gameDetails.dart';
 import 'Pages/homepage.dart';
@@ -19,9 +20,7 @@ class MyApp extends StatelessWidget
         var routes = {
             '/profile' : (context) => Profile(),
             '/reviews' : (context) => Reviews(title: 'Reviews'),
-            '/addgame' : (context) => AddGame(title: 'Add Game'),
-            '/gameDetails' : (context) => GameDetails(title: 'Game Details'),
-            '/login' : (context) => Login()
+            '/addgame' : (context) => AddGame(title: 'Add Game')
         };
 
 
