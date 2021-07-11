@@ -28,6 +28,7 @@ class AddGame extends StatelessWidget
                             radius: 120.0,
                           )
                       ),
+                      TextButton(onPressed: (){}, child: Text("Add/Edit Image")),
                       Text("Game Name:", style: TextStyle(color: Colors.blue)), 
                       TextField(controller: TextEditingController(text: "$name")),
                       Text("Publisher", style: TextStyle(color: Colors.blue)),
@@ -38,14 +39,15 @@ class AddGame extends StatelessWidget
                         maxLines: null,
                         controller: TextEditingController(text: "Description tmdkrnjn")
                       ),
+                      Text("Publish Year", style: TextStyle(color: Colors.blue)),
+                      TextField(controller: TextEditingController(text: "$publishYear")),
                       Slider(
-                          value: publishYear,
                           min: 1980,
-                          max: 2021,
-                          divisions: 1,
-                          label: publishYear.round().toString(),
+                          value: publishYear,
+                          max: 2521,
+                          divisions: 4,
                           onChanged: (double value) {
-                            //publishYear = value;
+                            //setState(() => publishYear = value);
                           }
                       ),
                       ElevatedButton(onPressed: (){}, child: Text("Add Game"))

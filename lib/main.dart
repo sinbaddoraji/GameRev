@@ -17,7 +17,6 @@ class MyApp extends StatelessWidget
    Widget build(BuildContext context) 
    {
         var routes = {
-            '/home': (context) => HomePage(title: 'Games'),
             '/profile' : (context) => Profile(),
             '/reviews' : (context) => Reviews(title: 'Reviews'),
             '/addgame' : (context) => AddGame(title: 'Add Game'),
@@ -28,12 +27,11 @@ class MyApp extends StatelessWidget
 
        return MaterialApp(
           title: 'Material App',
-          initialRoute: '/home',
           routes: routes,
           theme: ThemeData(
             primarySwatch: Colors.blue,
           ),
-          home: HomePage(title: 'Games')
+          home: new HomePage()
         );
 
    }

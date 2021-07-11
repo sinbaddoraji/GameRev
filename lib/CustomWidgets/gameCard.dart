@@ -1,18 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:gamerev/Data/game.dart';
 
 class GamePreview extends Card {
-  const GamePreview({
+
+   GamePreview({
     Key? key,
     this.color = const Color(0xFF2DBD3A),
     this.child,
-    required this.title,
-    required this.year,
-    required this.thumbnail
+    required this.game
   }) : super(key: key);
 
-  final String title;
-  final int year;
-  final Image? thumbnail;
+   final Game game;
 
   final Color color; 
   final Widget? child;
@@ -27,8 +25,8 @@ class GamePreview extends Card {
           Ink(
               color: Colors.blue,
               child: ListTile(
-                title: Text("$title "),
-                subtitle: Text("($year)"),
+                title: Text("${game.title} "),
+                subtitle: Text("(${game.description})"),
                 
               ),
           ),

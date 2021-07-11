@@ -1,44 +1,53 @@
 import 'package:flutter/material.dart';
 import 'package:gamerev/CustomWidgets/gameCard.dart';
+import 'package:gamerev/Data/game.dart';
 
-class HomePage extends StatelessWidget {
-   HomePage({Key? key, required this.title}) : super(key: key);
-   final String title;
+class HomePage extends StatefulWidget {
+  const HomePage({ Key? key }) : super(key: key);
+
+  @override
+  State<StatefulWidget> createState()  => HomePageState();
+}
+
+class HomePageState extends State<HomePage> {
+
+   late Future<List<Game>> games;
+
+   @override
+   void initState() {
+     super.initState();
+     games = Game.GetAllGames();
+   }
 
    @override
    Widget build(BuildContext context) {
-
-  List<Widget> games = [
-      GamePreview(title: "Super Mario", year: 2001, thumbnail: null),
-      GamePreview(title: "Super Mario", year: 2001, thumbnail: null),
-      GamePreview(title: "Super Mario", year: 2001, thumbnail: null), 
-      GamePreview(title: "Super Mario", year: 2001, thumbnail: null),
-      GamePreview(title: "Super Mario", year: 2001, thumbnail: null),
-      GamePreview(title: "Super Mario", year: 2001, thumbnail: null), 
-      GamePreview(title: "Super Mario", year: 2001, thumbnail: null),
-      GamePreview(title: "Super Mario", year: 2001, thumbnail: null),
-      GamePreview(title: "Super Mario", year: 2001, thumbnail: null), 
-      GamePreview(title: "Super Mario", year: 2001, thumbnail: null)
-    ];
-
-      for(var gamePreview in games)
-      {
-          //gamePreview.
-      }
       return Scaffold(
          appBar: AppBar(
-            title: Text(this.title),
+            title: Text("Home"),
          ),
-         body: GridView.extent(
-              primary: false,
-              padding: const EdgeInsets.all(10),
-              crossAxisSpacing: 10.0,
-              childAspectRatio: 0.78,
-              mainAxisSpacing: 12.0,
-              
-              shrinkWrap: true,
-              maxCrossAxisExtent: 200,
-              children: games
+        body: FutureBuilder<List<Game>>(
+          future: games,
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return GridView.builder(
+                  itemCount: snapshot.data!.length,
+                  padding: EdgeInsets.all(10),
+                  gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                      maxCrossAxisExtent: 300,
+                      crossAxisSpacing: 10,
+                      mainAxisSpacing: 10,
+                      childAspectRatio: 0.8
+                  ),
+                  itemBuilder: (context, index) {
+                    return GamePreview(game: snapshot.data![index]);
+                  }
+              );
+            }
+            else if (snapshot.hasError) {
+              return Text("Error: ${snapshot.error} Data = ${snapshot.data}");
+            }
+            return Text("Loading...");
+          },
         ),
         floatingActionButton:  FloatingActionButton.extended(
             onPressed: () {

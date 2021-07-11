@@ -37,15 +37,24 @@ class Game {
 
   static Future<List<Game>> GetAllGames() async
   {
-      List<Game> output = []; 
+      List<Game> output = [];
       http.Response response = await http.get(Uri.parse("$url"));
       var games = convert.jsonDecode(response.body)["data"];
 
       for (var gameData in games) {
-        var data = gameData["data"];
-        output.add(Game(data["id"], data["title"], data["thumbnail"], data["publisher"], data["release_year"], data["description"], data["genre"], data["platforms"], data["username"], data["post_time"], data["post_date"]));
-      }
+          try
+          {
+            var data = gameData["data"];
+            output.add(Game(data["id"], data["title"], data["thumbnail"], data["publisher"], data["release_year"], data["description"], data["genre"], data["platforms"], data["username"], data["post_time"], data["post_date"]));
+            print("game ${data["id"]}");
+          }
+          catch(err)
+          {
+              print(err);
+          }
+        }
 
+      print(output);
       return output;
   }
 
