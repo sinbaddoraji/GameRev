@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gamerev/Data/game.dart';
+import 'package:gamerev/Pages/myGames.dart';
 
 import 'Pages/gameDetails.dart';
 import 'Pages/homepage.dart';
@@ -11,18 +12,19 @@ import 'Pages/reviews.dart';
 
 void main() => runApp(MyApp());
 
-class MyApp extends StatelessWidget 
+class MyApp extends StatelessWidget
 {
-   // This widget is the root of your application.
+
+  static List<Game> allGames = [];
    @override
    Widget build(BuildContext context) 
    {
         var routes = {
             '/profile' : (context) => Profile(),
-            '/reviews' : (context) => Reviews(title: 'Reviews'),
-            '/addgame' : (context) => AddGame(title: 'Add Game')
+            '/register' : (context) => Register(),
+            '/addgame' : (context) => AddGame(title: 'Add Game'),
+            '/mygames' : (context) => MyGames(title: 'My Games')
         };
-
 
        return MaterialApp(
           title: 'Material App',

@@ -11,11 +11,13 @@ class Account
     final String last_name;
     final String country;
 
-    String url = "http://127.0.0.1:8083/accounts";
+    static String url = "http://127.0.0.1:8086/accounts";
 
     Account(this.id, this.user, this.pass, this.email, this.first_name, this.last_name, this.country);
 
-    Future<Account> Login(String user, String pass) async {
+    static Account account = Account(-1, "user", "pass", "email", "first_name", "last_name", "country");
+
+    static Future<Account> Login(String user, String pass) async {
         var tokenBytes = convert.utf8.encode("$user:$pass");
         String token = convert.base64Encode(tokenBytes);
 
@@ -26,9 +28,10 @@ class Account
         };
 
         http.Response response = await http.get(Uri.parse(url), headers:headers);
-        var data = convert.jsonDecode(response.body)["data"];
+        var data = convert.jsonDecode(response.body)["data"][0];
+        print(data["id"]);
 
-        return Account(data["id"], data["user"],data["pass"],data["email"],data["first_name"],data["last_name"],data["country"]);
+        return Account(data["id"], data["user"], "",data["email"],data["first_name"],data["last_name"],data["country"]);
     }
 
     Future<bool> Register() async

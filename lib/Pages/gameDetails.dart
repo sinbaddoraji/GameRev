@@ -2,17 +2,18 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:gamerev/Data/game.dart';
+import 'package:gamerev/Pages/reviews.dart';
 
 class GameDetails extends StatelessWidget
 {
-  GameDetails({Key? key, required this.game}) : super(key: key);
+  GameDetails({Key? key, required this.game, required this.img}) : super(key: key);
   final Game game;
+  Image img;
 
   @override
   Widget build(BuildContext context) {
 
     var _base64 = base64Decode(game.thumbnail);
-    Image img = Image.memory(_base64);
 
     var circleAvatar = Container(
       width: 300,
@@ -28,9 +29,7 @@ class GameDetails extends StatelessWidget
           child: Container(
             child: ListView(
               children: [
-                Center(
-                    child: circleAvatar
-                ),
+                circleAvatar,
                 Text("Name of Game: ${game.title}"),
                 Text("Name of Game: ${game.publisher}"),
                 Text("Release year: ${game.release_year}"),
@@ -39,19 +38,14 @@ class GameDetails extends StatelessWidget
             ),
           )
         ),
-        floatingActionButton:  FloatingActionButton.extended(
-          onPressed: () {
-            //Add game
-            Navigator.of(context).pushNamed('/addgame');
-          },
-          label: const Text('Add Game'),
-          icon: const Icon(Icons.add),
-          backgroundColor: Colors.blueGrey,
-        ),
         bottomNavigationBar: BottomNavigationBar(
             onTap: (int index){
+              if (index == 0)
+                Navigator.of(context).popUntil((route) => route.isFirst);
               if(index == 1)
-                Navigator.of(context).popAndPushNamed('/reviews');
+                Navigator.of(context).pushNamed('/mygames');
+              if(index == 2)
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => Reviews(game: game, title: "${game.title} reviews")));
             },
             items: [
               BottomNavigationBarItem(icon: Icon(Icons.home),label: "Home"),

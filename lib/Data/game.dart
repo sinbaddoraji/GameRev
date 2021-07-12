@@ -45,7 +45,7 @@ class Game {
           try
           {
             var data = gameData["data"];
-            output.add(Game(data["id"], data["title"], data["thumbnail"], data["publisher"], data["release_year"], data["description"], data["genre"], data["platforms"], data["username"], data["post_time"], data["post_date"]));
+            output.add(Game(data["id"], data["title"], data["thumbnail"], data["publisher"], data["release_year"], data["description"], data["genre"], data["platforms"], data["username"], data["post_time"], data["post_date"].split('T')[0]));
             print("game ${data["id"]}");
           }
           catch(err)

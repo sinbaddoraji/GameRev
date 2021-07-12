@@ -2,7 +2,9 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:gamerev/Data/account.dart';
 import 'package:gamerev/Data/game.dart';
+import 'package:gamerev/Pages/login.dart';
 import 'package:image_picker/image_picker.dart';
 
 
@@ -25,10 +27,23 @@ class AddGameState extends State<AddGame>
     super.initState();
   }
 
+  @override
+  Widget build(BuildContext context) {
+    if(Account.account.id == -1)
+    {
+
+      return Login("Login to add game");
+    }
+    else
+    {
+      return AddGameView(context);
+    }
+  }
+
 
 
   @override
-  Widget build(BuildContext context) {
+  Widget AddGameView(BuildContext context) {
 
       String name = "Mary";
       String publisher = "Sus";
@@ -71,19 +86,18 @@ class AddGameState extends State<AddGame>
                             mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Text("Add image via: "),
                             TextButton(
                                 onPressed: (){
                                   setState(() async {
                                     var file = (await _imagePicker.getImage(source: ImageSource.gallery)).readAsBytes();
                                   });
                                 },
-                                child: Text("Gallery")),
+                                child: Icon(Icons.photo)),
                             TextButton(onPressed: (){
                               setState(() async {
                                 var file = (await _imagePicker.getImage(source: ImageSource.camera)).readAsBytes();
                               });
-                            }, child: Text("Camera"))
+                            }, child: Icon(Icons.camera_alt))
                           ],
                         ),
                       ),

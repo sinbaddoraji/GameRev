@@ -4,7 +4,7 @@ import 'game.dart';
 class GameReview {
   int id;
   int game_id;
-  int rating;
+  double rating;
   String review;
   String username;
   final String review_time;
@@ -42,7 +42,7 @@ static Future<List<GameReview>> GetAllGameReviews(int game_id) async
   }
 
   static Future<GameReview> GetGameReview(int game_id, int id) async {
-      http.Response response = await http.get(Uri.parse("${Game.url}/$game_id/reviews/$id"));
+      http.Response response = await http.get(Uri.parse("${Game.url}/$game_id/reviews"));
       var data = convert.jsonDecode(response.body)["data"];
 
       return GameReview(data["id"], data["game_id"], data["rating"], data["review"], data["username"], data["review_time"], data["review_date"]);
@@ -56,7 +56,7 @@ static Future<List<GameReview>> GetAllGameReviews(int game_id) async
       };
       if(username == this.username)
       {
-          http.put(Uri.parse("$url/$id"), body: convert.jsonEncode(GetJson()), headers: headers);
+          http.put(Uri.parse("${Game.url}/$game_id/reviews"), body: convert.jsonEncode(GetJson()), headers: headers);
           return true;
 
       }else return false;
@@ -69,7 +69,7 @@ static Future<List<GameReview>> GetAllGameReviews(int game_id) async
         'Content-type': 'application/json'
       };
       try {
-        http.post(Uri.parse(url), body: convert.jsonEncode(GetJson()), headers: headers);
+        http.post(Uri.parse("${Game.url}/$game_id/reviews"), body: convert.jsonEncode(GetJson()), headers: headers);
         return true;
       } catch (e) {
         return false;
@@ -80,7 +80,7 @@ static Future<List<GameReview>> GetAllGameReviews(int game_id) async
   {
       if(username == this.username)
       {
-          http.delete(Uri.parse("$url/$id"));
+          http.delete(Uri.parse("${Game.url}/$game_id/reviews"));
           return true;
 
       }else return false;

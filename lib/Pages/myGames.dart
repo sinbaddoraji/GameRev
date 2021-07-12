@@ -1,62 +1,58 @@
 import 'package:flutter/material.dart';
 import 'package:gamerev/CustomWidgets/gameCard.dart';
+import 'package:gamerev/Data/game.dart';
+import 'package:gamerev/main.dart';
 
 class MyGames extends StatelessWidget {
    MyGames({Key? key, required this.title}) : super(key: key);
    final String title;
+   List<Game> game = MyApp.allGames;
 
    @override
    Widget build(BuildContext context) {
 
-    List<Widget> postedGames = [
-      GamePreview(title: "Super Mario", year: 2001, thumbnail: null),
-      GamePreview(title: "Super Mario", year: 2001, thumbnail: null),
-      GamePreview(title: "Super Mario", year: 2001, thumbnail: null), 
-      GamePreview(title: "Super Mario", year: 2001, thumbnail: null),
-      GamePreview(title: "Super Mario", year: 2001, thumbnail: null),
-    ];
-
-    List<Widget> favorites = [
-      GamePreview(title: "Super Mario", year: 2001, thumbnail: null),
-      GamePreview(title: "Super Mario", year: 2001, thumbnail: null),
-      GamePreview(title: "Super Mario", year: 2001, thumbnail: null), 
-      GamePreview(title: "Super Mario", year: 2001, thumbnail: null),
-      GamePreview(title: "Super Mario", year: 2001, thumbnail: null),
-    ];
-    
-    
-    var count = 2;
-    if (MediaQuery.of(context).orientation == Orientation.landscape)
-        count = 3;
 
       return Scaffold(
-         appBar: AppBar(
-            title: Text(this.title),
-         ),
-         body: GridView.count(
-              primary: false,
-              padding: const EdgeInsets.all(10),
-              crossAxisCount: count,
-              crossAxisSpacing: 10.0,
-              childAspectRatio: 0.78,
-              mainAxisSpacing: 12.0,
-              shrinkWrap: true,
-              children: postedGames
-        ),
-        
-        bottomNavigationBar: BottomNavigationBar(
-          onTap: (int index){
-            if (index == 1)
-              Navigator.popUntil(context, ModalRoute.withName('/'));
-            if(index == 2)
-              Navigator.of(context).pushNamed('/profile');
-          },
-          items: [
-            BottomNavigationBarItem(icon: Icon(Icons.home),label: "Home"),
-            BottomNavigationBarItem(icon: Icon(Icons.my_library_books),label: "My Games"),
-            BottomNavigationBarItem(icon: Icon(Icons.person),label: "Profile"),
-          ]
-        )
+          appBar: AppBar(
+             title: Text("Your games"),
+          ),
+          body: GridView.builder(
+              itemCount: game.length,
+              padding: EdgeInsets.all(10),
+              gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                  maxCrossAxisExtent: 300,
+                  crossAxisSpacing: 10,
+                  mainAxisSpacing: 10,
+                  childAspectRatio: 0.8
+              ),
+              itemBuilder: (cx, index) {
+                 return GamePreview(context, game: game[index]);
+              }
+          ),
+          floatingActionButton:  FloatingActionButton.extended(
+             onPressed: () {
+                //Add game
+                Navigator.of(context).pushNamed('/addgame');
+             },
+             label: Text('Add Game'),
+             icon: Icon(Icons.add),
+             backgroundColor: Colors.blueAccent,
+          ),
+          bottomNavigationBar: BottomNavigationBar(
+              onTap: (int index){
+                if (index == 0)
+                  Navigator.of(context).popUntil((route) => route.isFirst);
+                if(index == 1)
+                  Navigator.of(context).pushNamed('/mygames');
+                if(index == 2)
+                  Navigator.of(context).pushNamed('/profile');
+              },
+              items: [
+                 BottomNavigationBarItem(icon: Icon(Icons.home),label: "Home"),
+                 BottomNavigationBarItem(icon: Icon(Icons.my_library_books),label: "My Games"),
+                 BottomNavigationBarItem(icon: Icon(Icons.person),label: "Profile"),
+              ]
+          )
       );
    }
 }

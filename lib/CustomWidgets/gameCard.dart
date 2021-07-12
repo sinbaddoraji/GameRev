@@ -4,10 +4,11 @@ import 'package:gamerev/Pages/gameDetails.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'dart:typed_data';
+import '../main.dart';
 
 class GamePreview extends Card {
 
-   GamePreview({
+   GamePreview(this.parentContext, {
     Key? key,
     this.color = const Color(0xFF2DBD3A),
     this.child,
@@ -18,7 +19,7 @@ class GamePreview extends Card {
 
   final Color color; 
   final Widget? child;
-
+  final BuildContext parentContext;
   
   @override
   Widget build(BuildContext context) {
@@ -40,13 +41,11 @@ class GamePreview extends Card {
           Expanded(
             child: new InkWell(
 
-              child: Expanded(
-                child : Container(
-                  child: img,
-                )
+              child: Container(
+                child: img,
               ),
               onTap: (){
-                Navigator.of(context).push(MaterialPageRoute(builder: (context) => GameDetails(game: game)));
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => GameDetails(game: game, img: img)));
               },
 
             )

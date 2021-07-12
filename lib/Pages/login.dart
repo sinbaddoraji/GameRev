@@ -1,39 +1,91 @@
 import 'package:flutter/material.dart';
+import 'package:gamerev/Data/account.dart';
 
-class Login extends StatelessWidget
+class Login extends StatefulWidget
 {
+  String title;
+  Login(this.title);
+
+  @override
+  State<StatefulWidget> createState() => LoginState(title);
+
+}
+
+
+class LoginState extends State<Login>
+{
+
+  String title;
+  LoginState(this.title);
+
+  var user = TextField(controller: TextEditingController(),
+
+    decoration: new InputDecoration(
+        border: new OutlineInputBorder(
+            borderSide: new BorderSide(color: Colors.teal)),
+        prefixIcon: const Icon(
+          Icons.supervised_user_circle,
+          color: Colors.green,
+        ),
+        prefixText: ' ',
+        suffixStyle: const TextStyle(color: Colors.green)),
+  );
+  var pass = TextField(obscureText: true, controller: TextEditingController(),
+
+      decoration: new InputDecoration(
+      border: new OutlineInputBorder(
+          borderSide: new BorderSide(color: Colors.teal)),
+          labelText: 'Password',
+          prefixIcon: const Icon(
+          Icons.password,
+          color: Colors.green,
+      ),
+      prefixText: ' ',
+      suffixStyle: const TextStyle(color: Colors.green)),
+  );
+  Future<void> Login() async
+  {
+      var acc = await Account.Login(user.controller!.text,pass.controller!.text);
+      Account.account = acc;
+      print(acc.id);
+
+      Navigator.pushReplacementNamed(context, '/profile');
+  }
+
   @override
   Widget build(BuildContext context) {
-    String firstName = "Mary";
-    String lastName = "Sus";
-    String email =  "Email@gmail.com";
-    String username = "bfhrb345";
+
 
     return Scaffold(
       appBar: AppBar(
-          title: Text("Register")
+          title: Text(title)
       ),
       body: ListView(
-        padding: const EdgeInsets.all(20),
+        padding:  EdgeInsets.all(30),
         shrinkWrap: true,
         children: [
           Center(
-            child: CircleAvatar(
-              backgroundColor: Colors.blue,
-              radius: 120.0,
-            ),
-          ),
-          Center(
             child: Container(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height,
+              width: 900,
               child: ListView(
+                padding: EdgeInsets.all(30),
+                shrinkWrap: true,
                 children: [
-                  Text("Username", style: TextStyle(color: Colors.blue)),
-                  TextField(),
-                  Text("Password", style: TextStyle(color: Colors.blue), ),
-                  TextField(obscureText: true),
-                  ElevatedButton(onPressed: () {}, child: Text("Register"))
+                  Center(
+                    child: Text("Login"),
+                  ),
+                  user,
+                  pass,
+                  ElevatedButton(onPressed: Login,
+                      child: Text("Login")),
+                  Row(
+                    children: [
+                      Text("Do not have an account? "),
+                      TextButton(onPressed: (){
+                        Navigator.pushReplacementNamed(context, '/register');
+                      }, child: Text("Register"))
+                    ],
+                  )
                 ],
               ),
             ),

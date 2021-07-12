@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:gamerev/CustomWidgets/gameCard.dart';
 import 'package:gamerev/Data/game.dart';
+import 'package:gamerev/main.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({ Key? key }) : super(key: key);
+  const HomePage({ Key? key}) : super(key: key);
 
   @override
   State<StatefulWidget> createState()  => HomePageState();
@@ -16,6 +17,7 @@ class HomePageState extends State<HomePage> {
    @override
    void initState() {
      super.initState();
+     MyApp.allGames.clear();
      games = Game.GetAllGames();
    }
 
@@ -38,8 +40,9 @@ class HomePageState extends State<HomePage> {
                       mainAxisSpacing: 10,
                       childAspectRatio: 0.8
                   ),
-                  itemBuilder: (context, index) {
-                    return GamePreview(game: snapshot.data![index]);
+                  itemBuilder: (cx, index) {
+                    MyApp.allGames.add(snapshot.data![index]);
+                    return GamePreview(context, game: snapshot.data![index]);
                   }
               );
             }
@@ -54,12 +57,16 @@ class HomePageState extends State<HomePage> {
                 //Add game
                 Navigator.of(context).pushNamed('/addgame');
             },
-            label: const Text('Add Game'),
-            icon: const Icon(Icons.add),
-            backgroundColor: Colors.blueGrey,
+            label: Text('Add Game'),
+            icon: Icon(Icons.add),
+            backgroundColor: Colors.blueAccent,
         ),
         bottomNavigationBar: BottomNavigationBar(
           onTap: (int index){
+            if (index == 0)
+              Navigator.of(context).popUntil((route) => route.isFirst);
+            if(index == 1)
+              Navigator.of(context).pushNamed('/mygames');
             if(index == 2)
               Navigator.of(context).pushNamed('/profile');
           },
