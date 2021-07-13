@@ -4,10 +4,6 @@ class Register extends StatelessWidget
 {
   @override
   Widget build(BuildContext context) {
-    String firstName = "Mary";
-    String lastName = "Sus";
-    String email =  "Email@gmail.com";
-    String username = "bfhrb345";
 
     return Scaffold(
         appBar: AppBar(

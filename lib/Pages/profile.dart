@@ -6,7 +6,6 @@ import 'package:gamerev/Pages/register.dart';
 class Profile extends StatelessWidget
 {
 
-  @override
   Widget ProfileView(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
@@ -18,8 +17,9 @@ class Profile extends StatelessWidget
           children: [
             Center(
               child: CircleAvatar(
-                backgroundColor: Colors.blue,
-                radius: 120.0,
+                radius: 160.0,
+                foregroundColor: Colors.blueAccent,
+                foregroundImage: Image.network("https://www.pngitem.com/pimgs/m/146-1468479_my-profile-icon-blank-profile-picture-circle-hd.png").image,
               ),
             ),
             Center(

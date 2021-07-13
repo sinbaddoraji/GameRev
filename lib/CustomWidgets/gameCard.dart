@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gamerev/Data/game.dart';
 import 'package:gamerev/Pages/gameDetails.dart';
-import 'dart:async';
 import 'dart:convert';
-import 'dart:typed_data';
-import '../main.dart';
 
 class GamePreview extends Card {
 
@@ -40,7 +37,8 @@ class GamePreview extends Card {
           ),
           Expanded(
             child: new InkWell(
-
+              highlightColor: Colors.blueAccent,
+              hoverColor: Colors.black26,
               child: Container(
                 child: img,
               ),

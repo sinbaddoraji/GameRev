@@ -27,13 +27,34 @@ class GameDetails extends StatelessWidget
         ),
         body: Center(
           child: Container(
+            width: 1000,
             child: ListView(
               children: [
+                SizedBox(height: 16),
                 circleAvatar,
-                Text("Name of Game: ${game.title}"),
-                Text("Name of Game: ${game.publisher}"),
-                Text("Release year: ${game.release_year}"),
-                Text("Posted ${game.post_date} by ${game.username}"),
+                Text("Name of Game: ${game.title}", textScaleFactor: 2, textAlign: TextAlign.center),
+                SizedBox(height: 16),
+                Text("Publisher: ${game.publisher}", textScaleFactor: 2, textAlign: TextAlign.center),
+                SizedBox(height: 16),
+                Text("Release year: ${game.release_year}", textScaleFactor: 2, textAlign: TextAlign.center),
+                SizedBox(height: 16),
+                Text("Posted ${game.post_date} by ${game.username}", textScaleFactor: 2, textAlign: TextAlign.center),
+                SizedBox(height: 16),
+                TextField(
+                  readOnly: true,
+                    decoration: new InputDecoration(
+                        border: new OutlineInputBorder
+                          (
+                            borderSide: new BorderSide(color: Colors.teal)
+                        ),
+                        labelText: 'Description',
+                        prefixText: ' ',
+                        suffixStyle: const TextStyle(color: Colors.green)
+                    ),
+                    keyboardType: TextInputType.multiline,
+                    maxLines: null,
+                    controller: TextEditingController(text: "${game.description}\n\n\n\n")
+                )
               ],
             ),
           )

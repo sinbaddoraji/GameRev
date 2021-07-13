@@ -1,17 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:gamerev/CustomWidgets/gameCard.dart';
+import 'package:gamerev/Data/account.dart';
 import 'package:gamerev/Data/game.dart';
 import 'package:gamerev/main.dart';
 
 class MyGames extends StatelessWidget {
    MyGames({Key? key, required this.title}) : super(key: key);
    final String title;
-   List<Game> game = MyApp.allGames;
+
 
    @override
    Widget build(BuildContext context) {
-
-
+     List<Game> game = [];
+      for(Game g in MyApp.allGames)
+      {
+          if(g.username == Account.account.user)
+          {
+              game.add(g);
+          }
+      }
       return Scaffold(
           appBar: AppBar(
              title: Text("Your games"),

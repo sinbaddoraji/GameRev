@@ -25,9 +25,9 @@ class LoginState extends State<Login>
             borderSide: new BorderSide(color: Colors.teal)),
         prefixIcon: const Icon(
           Icons.supervised_user_circle,
-          color: Colors.green,
+          color: Colors.blue,
         ),
-        prefixText: ' ',
+        labelText: 'Username',
         suffixStyle: const TextStyle(color: Colors.green)),
   );
   var pass = TextField(obscureText: true, controller: TextEditingController(),
@@ -38,7 +38,7 @@ class LoginState extends State<Login>
           labelText: 'Password',
           prefixIcon: const Icon(
           Icons.password,
-          color: Colors.green,
+          color: Colors.blue,
       ),
       prefixText: ' ',
       suffixStyle: const TextStyle(color: Colors.green)),
@@ -49,7 +49,7 @@ class LoginState extends State<Login>
       Account.account = acc;
       print(acc.id);
 
-      Navigator.pushReplacementNamed(context, '/profile');
+      Navigator.pop(context);
   }
 
   @override
@@ -72,12 +72,16 @@ class LoginState extends State<Login>
                 shrinkWrap: true,
                 children: [
                   Center(
-                    child: Text("Login"),
+                    child: Text("Login", textScaleFactor: 2,),
                   ),
+                  SizedBox(height: 10),
                   user,
+                  SizedBox(height: 10),
                   pass,
+                  SizedBox(height: 10),
                   ElevatedButton(onPressed: Login,
                       child: Text("Login")),
+                  SizedBox(height: 10),
                   Row(
                     children: [
                       Text("Do not have an account? "),

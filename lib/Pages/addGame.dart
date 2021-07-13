@@ -21,10 +21,16 @@ class AddGameState extends State<AddGame>
   final String title;
   //late Future<Uint8List> file;
   ImagePicker _imagePicker = ImagePicker();
+  File _pickedImage = File('null');
 
   @override
  void initState()  {
     super.initState();
+  }
+
+  _loadPicker(ImageSource source) async {
+    _pickedImage= await ImagePicker.pickImage(source: source);
+    Navigator.pop(context);
   }
 
   @override
@@ -39,6 +45,7 @@ class AddGameState extends State<AddGame>
       return AddGameView(context);
     }
   }
+
 
 
 
@@ -65,10 +72,17 @@ class AddGameState extends State<AddGame>
       var genreField = TextField(controller: TextEditingController(text: "$name"));
       var platformsField = TextField(controller: TextEditingController(text: "$name"));
 
-      var circleAvatar = Container(
+      //
+      Image img = Image.network("https://images.nintendolife.com/c59ebd4f6d6c2/exvl66vuyae8pud.original.jpg", fit: BoxFit.cover);
+      if(_pickedImage != null && _pickedImage.path != "null")
+        img = Image.file(_pickedImage);
+
+    var circleAvatar = Container(
         width: 500,
         height: 500,
-        child: Image.network("https://images.nintendolife.com/c59ebd4f6d6c2/exvl66vuyae8pud.original.jpg", fit: BoxFit.cover),
+        decoration: BoxDecoration(
+            image: new DecorationImage(image: img.image)
+        ),
       );
       return new Scaffold(
           appBar: AppBar(
@@ -88,14 +102,14 @@ class AddGameState extends State<AddGame>
                         children: [
                             TextButton(
                                 onPressed: (){
-                                  setState(() async {
-                                    var file = (await _imagePicker.getImage(source: ImageSource.gallery)).readAsBytes();
+                                  setState(()  {
+                                    _loadPicker(ImageSource.gallery);
                                   });
                                 },
                                 child: Icon(Icons.photo)),
                             TextButton(onPressed: (){
-                              setState(() async {
-                                var file = (await _imagePicker.getImage(source: ImageSource.camera)).readAsBytes();
+                              setState(() {
+                                _loadPicker(ImageSource.camera);
                               });
                             }, child: Icon(Icons.camera_alt))
                           ],
