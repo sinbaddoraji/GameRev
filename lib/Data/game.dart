@@ -15,7 +15,7 @@ class Game {
   final String post_time;
   final String post_date;
 
-  static String url = 'http://127.0.0.1:8086/api/v1/games';
+  static String url = 'http://192.168.1.216:8086/api/v1/games';
   
 
   Game(this.id, this.title, this.thumbnail, this.publisher, this.release_year, this.description, this.genre, this.platforms, this.username, this.post_time, this.post_date);

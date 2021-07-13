@@ -10,7 +10,7 @@ class GameReview {
   final String review_time;
   final String review_date;
 
-  static String url = 'http://127.0.0.1:8086/api/v1/games';
+  static String url = 'http://192.168.1.216:8086/api/v1/games';
 
   GameReview(this.id, this.game_id, this.rating, this.review, this.username, this.review_time, this.review_date);
 

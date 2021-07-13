@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
@@ -6,6 +7,7 @@ import 'package:gamerev/Data/account.dart';
 import 'package:gamerev/Data/game.dart';
 import 'package:gamerev/Pages/login.dart';
 import 'package:image_picker/image_picker.dart';
+import "package:http/http.dart" as http;
 
 
 class AddGame extends StatefulWidget {
@@ -17,7 +19,18 @@ class AddGame extends StatefulWidget {
 
 class AddGameState extends State<AddGame>
 {
-  AddGameState({ required this.title });
+  AddGameState({ required this.title })
+  {
+    Image img = Image.network("https://images.nintendolife.com/c59ebd4f6d6c2/exvl66vuyae8pud.original.jpg", fit: BoxFit.cover);
+
+    circleAvatar = Container(
+      width: 500,
+      height: 500,
+      decoration: BoxDecoration(
+          image: new DecorationImage(image: img.image)
+      ),
+    );
+  }
   final String title;
   //late Future<Uint8List> file;
   ImagePicker _imagePicker = ImagePicker();
@@ -26,11 +39,93 @@ class AddGameState extends State<AddGame>
   @override
  void initState()  {
     super.initState();
+
   }
 
   _loadPicker(ImageSource source) async {
     _pickedImage= await ImagePicker.pickImage(source: source);
-    Navigator.pop(context);
+
+
+    circleAvatar = Container(
+      width: 500,
+      height: 500,
+      decoration: BoxDecoration(
+          image: new DecorationImage(
+              image: Image.file(_pickedImage).image
+          )
+      ),
+    );
+
+    final bytes = File(_pickedImage.path).readAsBytesSync();
+    thumbnail = base64Encode(bytes);
+  }
+
+
+  Future<String?> networkImageToBase64(String imageUrl) async {
+    http.Response response = await http.get(imageUrl);
+    final bytes = response?.bodyBytes;
+    return (bytes != null ? base64Encode(bytes) : null);
+  }
+
+  _loadUrlImage() async
+  {
+    var imageField = TextField(controller: TextEditingController(),
+
+      decoration: new InputDecoration(
+          border: new OutlineInputBorder(
+              borderSide: new BorderSide(color: Colors.teal)),
+          prefixIcon: const Icon(
+            Icons.link,
+            color: Colors.blue,
+          ),
+          labelText: 'Image Url',
+          suffixStyle: const TextStyle(color: Colors.green)),
+    );
+
+      Navigator.of(context).push(
+          MaterialPageRoute(
+              builder: (context) => AlertDialog(
+                title: const Text('Input game url'),
+                content: imageField,
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () async
+                    {
+                      Navigator.pop(context, 'Cancel');
+                    },
+                    child: const Text('Cancel'),
+                  ),
+                  TextButton(
+                    onPressed: () async
+                    {
+                      var img = Image.network(imageField.controller!.text, fit: BoxFit.cover).image;
+
+                      setState(() {
+                        circleAvatar = Container(
+                          width: 500,
+                          height: 500,
+                          decoration: BoxDecoration(
+                              image: new DecorationImage(
+                                  image: img
+                              )
+                          ),
+                        );
+                      });
+
+
+
+                      thumbnail = (await networkImageToBase64(imageField.controller!.text))!;
+
+                      Navigator.pop(context, 'OK');
+                    },
+                    child: const Text('OK'),
+                  ),
+                ],
+              )
+          )
+      );
+
+
   }
 
   @override
@@ -47,43 +142,34 @@ class AddGameState extends State<AddGame>
   }
 
 
-
+  late Container circleAvatar;
+  String thumbnail = "infrjnfrmfr";
 
   @override
   Widget AddGameView(BuildContext context) {
 
-      String name = "Mary";
-      String publisher = "Sus";
+      String name = "user";
+      String publisher = "nintendo";
       //String description =  "Email@gmail.com";
       //String username = "bfhrb345";
       double publishYear = 2000;
 
-      String thumbnail = "infrjnfrmfr";
-      String username = "sinbaddoraji";
+
+      String username = Account.account.user;
 
       var nameField = TextField(controller: TextEditingController(text: "$name"));
       var publisherField = TextField(controller: TextEditingController(text: "$name"));
       var descriptionField = TextField(
           keyboardType: TextInputType.multiline,
           maxLines: null,
-          controller: TextEditingController(text: "Description tmdkrnjn")
+          controller: TextEditingController(text: "Description")
       );
-      var publishYearField = TextField(controller: TextEditingController(text: "$name"));
-      var genreField = TextField(controller: TextEditingController(text: "$name"));
-      var platformsField = TextField(controller: TextEditingController(text: "$name"));
+      var publishYearField = TextField(controller: TextEditingController(text: "$publishYear"));
+      var genreField = TextField(controller: TextEditingController(text: "Adventure"));
+      var platformsField = TextField(controller: TextEditingController(text: "Windows, 3DS"));
 
       //
-      Image img = Image.network("https://images.nintendolife.com/c59ebd4f6d6c2/exvl66vuyae8pud.original.jpg", fit: BoxFit.cover);
-      if(_pickedImage != null && _pickedImage.path != "null")
-        img = Image.file(_pickedImage);
 
-    var circleAvatar = Container(
-        width: 500,
-        height: 500,
-        decoration: BoxDecoration(
-            image: new DecorationImage(image: img.image)
-        ),
-      );
       return new Scaffold(
           appBar: AppBar(
             title: Text(this.title)
@@ -111,7 +197,12 @@ class AddGameState extends State<AddGame>
                               setState(() {
                                 _loadPicker(ImageSource.camera);
                               });
-                            }, child: Icon(Icons.camera_alt))
+                            }, child: Icon(Icons.camera_alt)),
+                            TextButton(onPressed: (){
+                              setState(() {
+                                _loadUrlImage();
+                              });
+                            }, child: Icon(Icons.link))
                           ],
                         ),
                       ),
@@ -129,7 +220,7 @@ class AddGameState extends State<AddGame>
                           max: 2521,
                           divisions: 4,
                           onChanged: (double value) {
-                            //setState(() => publishYear = value);
+                            setState(() => publishYear = value);
 
                           }
                       ),

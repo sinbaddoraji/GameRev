@@ -30,9 +30,8 @@ class GamePreview extends Card {
           Ink(
               color: Colors.blue,
               child: ListTile(
-                title: Text("${game.title} "),
-                subtitle: Text("(${game.description})"),
-                
+                title: Text("${game.title}"),
+                subtitle: Text("(Release year - ${game.release_year})"),
               ),
           ),
           Expanded(

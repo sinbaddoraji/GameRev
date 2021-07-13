@@ -58,7 +58,9 @@ class ReviewsState extends State<Reviews>
                                       subtitle: Row(
                                         children: [
                                           Text(gameReview.review),
-                                          StarRating(onRatingChanged: (double rating) {  }, color: Colors.yellow, rating: gameReview.rating)
+                                          StarRating(onRatingChanged: (double rating) {
+                                            gameReview.rating = rating;
+                                          }, color: Colors.yellow, rating: gameReview.rating)
                                         ],
                                       ),
                                     ),

@@ -11,7 +11,7 @@ class Account
     final String last_name;
     final String country;
 
-    static String url = "http://127.0.0.1:8086/accounts";
+    static String url = "http://192.168.1.216:8086/accounts";
 
     Account(this.id, this.user, this.pass, this.email, this.first_name, this.last_name, this.country);
 
