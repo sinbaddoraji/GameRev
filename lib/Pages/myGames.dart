@@ -16,6 +16,7 @@ class MyGames extends StatelessWidget {
       {
           if(g.username == Account.account.user)
           {
+            if(!game.contains(g))
               game.add(g);
           }
       }

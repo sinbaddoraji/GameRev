@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:gamerev/Data/account.dart';
 import 'package:gamerev/Data/game.dart';
 import 'package:gamerev/Data/gameReviews.dart';
+import 'package:gamerev/Pages/reviews.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:gamerev/CustomWidgets/ratingsBar.dart';
 
@@ -46,21 +47,32 @@ class AddReviewState extends State<AddReview>
     }
   }
 
+  double rate = 0;
+
   Widget AddReview(BuildContext context) {
     var username =  "sinbaddoraji";
 
     var review = TextField(
+        decoration: new InputDecoration(
+            border: new OutlineInputBorder(
+                borderSide: new BorderSide(color: Colors.teal)
+            ),
+            labelText: 'Description',
+            prefixText: ' ',
+            suffixStyle: const TextStyle(color: Colors.green)
+        ),
         keyboardType: TextInputType.multiline,
         maxLines: null,
-        controller: TextEditingController(text: "Description tmdkrnjn")
+        controller: TextEditingController(text: "\n\n\n\n")
     );
+
 
     var rating =  StarRating(
         onRatingChanged: (double rating)
         {
-          rating = 5;
+            //rate = rating;
         },
-        color: Colors.yellow, rating: 4,);
+        color: Colors.yellow, rating: rate,);
 
 
     var circleAvatar = Container(
@@ -76,15 +88,22 @@ class AddReviewState extends State<AddReview>
           padding: const EdgeInsets.all(20),
           shrinkWrap: true,
           children: [
-            Text("Rating/5"),
+            SizedBox(height: 20),
+            Text("$rate/5"),
+            SizedBox(height: 20),
             TextField(
-              keyboardType: TextInputType.number, controller: TextEditingController(text: "4"),
+              keyboardType: TextInputType.number, controller: TextEditingController(text: "$rate"),
               onChanged: (text) {
-                rating.rating = double.parse(text);
+                setState(() {
+                  rate = double.parse(text);
+                });
               },
             ),
+            SizedBox(height: 20),
             rating,
+            SizedBox(height: 20),
             review,
+            SizedBox(height: 20),
             ElevatedButton(
                 onPressed: ()
                 {
@@ -106,6 +125,10 @@ class AddReviewState extends State<AddReview>
                               ],
                             )
                         )
+                    );
+                    Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(
+                            builder: (context) => Reviews(game: game, title: "${game.title} reviews"))
                     );
                   }
                 }

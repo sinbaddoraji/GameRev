@@ -5,6 +5,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:gamerev/Data/account.dart';
 import 'package:gamerev/Data/game.dart';
+import 'package:gamerev/Pages/homepage.dart';
 import 'package:gamerev/Pages/login.dart';
 import 'package:image_picker/image_picker.dart';
 import "package:http/http.dart" as http;
@@ -148,25 +149,73 @@ class AddGameState extends State<AddGame>
   @override
   Widget AddGameView(BuildContext context) {
 
-      String name = "user";
-      String publisher = "nintendo";
-      //String description =  "Email@gmail.com";
-      //String username = "bfhrb345";
-      double publishYear = 2000;
-
 
       String username = Account.account.user;
 
-      var nameField = TextField(controller: TextEditingController(text: "$name"));
-      var publisherField = TextField(controller: TextEditingController(text: "$name"));
+      var nameField = TextField(
+          decoration: new InputDecoration(
+              border: new OutlineInputBorder(
+                  borderSide: new BorderSide(color: Colors.teal)
+              ),
+              labelText: 'Name of Game',
+              prefixText: ' ',
+              suffixStyle: const TextStyle(color: Colors.green)
+          ),
+          controller: TextEditingController(text: ""));
+
+      var publisherField = TextField(
+          decoration: new InputDecoration(
+              border: new OutlineInputBorder(
+                  borderSide: new BorderSide(color: Colors.teal)
+              ),
+              labelText: 'Publisher',
+              prefixText: ' ',
+              suffixStyle: const TextStyle(color: Colors.green)
+          ),controller: TextEditingController(text: ""));
+
       var descriptionField = TextField(
+          decoration: new InputDecoration(
+              border: new OutlineInputBorder(
+                  borderSide: new BorderSide(color: Colors.teal)
+              ),
+              labelText: 'Description',
+              prefixText: ' ',
+              suffixStyle: const TextStyle(color: Colors.green)
+          ),
           keyboardType: TextInputType.multiline,
           maxLines: null,
-          controller: TextEditingController(text: "Description")
+          controller: TextEditingController(text: "\n\n\n\n")
       );
-      var publishYearField = TextField(controller: TextEditingController(text: "$publishYear"));
-      var genreField = TextField(controller: TextEditingController(text: "Adventure"));
-      var platformsField = TextField(controller: TextEditingController(text: "Windows, 3DS"));
+      var publishYearField = TextField(
+          decoration: new InputDecoration(
+              border: new OutlineInputBorder(
+                  borderSide: new BorderSide(color: Colors.teal)
+              ),
+              labelText: 'Publish year',
+              prefixText: ' ',
+              suffixStyle: const TextStyle(color: Colors.green)
+          ),
+          controller: TextEditingController(text: ""));
+      var genreField = TextField(
+          decoration: new InputDecoration(
+              border: new OutlineInputBorder(
+                  borderSide: new BorderSide(color: Colors.teal)
+              ),
+              labelText: 'Genre',
+              prefixText: ' ',
+              suffixStyle: const TextStyle(color: Colors.green)
+          ),
+          controller: TextEditingController(text: ""));
+
+      var platformsField = TextField(
+          decoration: new InputDecoration(
+              border: new OutlineInputBorder(
+                  borderSide: new BorderSide(color: Colors.teal)
+              ),
+              labelText: 'Platforms',
+              prefixText: ' ',
+              suffixStyle: const TextStyle(color: Colors.green)
+          ),controller: TextEditingController(text: "Windows, 3DS"));
 
       //
 
@@ -175,7 +224,7 @@ class AddGameState extends State<AddGame>
             title: Text(this.title)
           ),
           body:  ListView(
-                    padding: const EdgeInsets.all(20),
+                    padding: const EdgeInsets.all(10),
                     shrinkWrap: true,
                     children: [
                       Center(
@@ -206,35 +255,26 @@ class AddGameState extends State<AddGame>
                           ],
                         ),
                       ),
-                      Text("Game Name:", style: TextStyle(color: Colors.blue)), 
+                      SizedBox(height: 10),
                       nameField,
-                      Text("Publisher", style: TextStyle(color: Colors.blue)),
+                      SizedBox(height: 10),
                       publisherField,
-                      Text("Description", style: TextStyle(color: Colors.blue)),
+                      SizedBox(height: 10),
                       descriptionField,
-                      Text("Publish Year", style: TextStyle(color: Colors.blue)),
+                      SizedBox(height: 10),
                       publishYearField,
-                      Slider(
-                          min: 1980,
-                          value: publishYear,
-                          max: 2521,
-                          divisions: 4,
-                          onChanged: (double value) {
-                            setState(() => publishYear = value);
-
-                          }
-                      ),
-                Text("Genre", style: TextStyle(color: Colors.blue)),
+                      SizedBox(height: 10),
                       genreField,
-                      Text("Platforms", style: TextStyle(color: Colors.blue)),
+                      SizedBox(height: 10),
                       platformsField,
+                      SizedBox(height: 10),
                       ElevatedButton(
                           onPressed: ()
                           {
                               var game = Game(0,
                                   title,
                                   thumbnail,
-                                  publisher,
+                                  publisherField.controller!.text,
                                   int.parse(publishYearField.controller!.text),
                                   descriptionField.controller!.text,
                                   genreField.controller!.text,
@@ -260,6 +300,12 @@ class AddGameState extends State<AddGame>
                                         )
                                     )
                                 );
+
+                                Navigator.of(context).pushReplacement(
+                                    MaterialPageRoute(
+                                        builder: (context) => HomePage())
+                                    );
+
                               }
 
 
